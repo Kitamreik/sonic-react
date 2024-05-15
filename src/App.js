@@ -6,7 +6,7 @@ import {hello, sonic, one, two, sonicData} from "./data.js";
 
 //reference files (components)
 import NewEntryForm from './NewEntryForm.js';
-import TicketList from './TicketList.js';
+//import TicketList from './TicketList.js';
 
 import tickets from "./tickets.json";
 import characters from "./characters.json";
@@ -44,6 +44,19 @@ function App() {
 }
 
 // component definition outside of the app
+function TicketList(props) {
+  console.log(props);
+  return(
+    <div>
+      {/* add props before the json target */}
+      {props.status.map((ticket) => (
+      <ul>
+        <li>{ticket}</li>
+      </ul>
+      ))}
+    </div>
+  )
+}
 
 function Sonic() {
   return (
