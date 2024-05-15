@@ -1,0 +1,56 @@
+[
+
+  {
+    "id": 1,
+    "name": "Sonic the Hedgehog",
+    "type": "Speed",
+    "synopsis":"The world's fastest supersonic hedgehog unrivalled in speed returns once more. Always the drifter, Sonic goes whenever the wind takes him, and lives life according to his own rules rather than the standards of those around him. He's basically easy-going, but when he gets fired up over an injustice, his anger explodes with surprising consequences. ",
+    "stats": {
+      "defense": 4,
+      "attack": 5,
+      "soloAttack": "Homing Attack",
+      "special":"Light Dash: a maneuver whereby Sonic hurtles along a path of illuminated Rings, even through mid-air!",
+      "code": {
+        "key": "3-122",
+        "exe": "0.0.0.0/0"
+      }
+    }
+  },
+  {
+    "id": 2,
+    "name": "Miles 'Tails' Prower",
+    "type": "Fly",
+    "synopsis":"Don't let his docile appearance deceive you. This cute twin-tailed fox is an absolute mecha-maniac with skills rivaling those of Dr. Eggman. Humble about his abilities, he always does his best to help out Sonic, who sees him as something as a cute kid brother.",
+    "stats": {
+      "defense": 2,
+      "attack": 3,
+      "soloAttack": "Ring Bombs",
+      "special":"Thunder Flight",
+      "code": {
+        "key": "3-123",
+        "exe": "0.0.0.0/0"
+      }
+    }
+  },
+  {
+    "id": 3,
+    "name": "Knuckles the Echidna",
+    "type": "Power",
+    "synopsis": "An egotistical dreadlocked Echidna from the Angel Island, and appointed guardian of the Master Emerald. Sonic may be a drifter, but Knuckles' home is firmly fixed in the mountains. Wild, tough, stubborn and inflexible, Knuckles sees himself as Sonic's rival, perhaps because of his own dreams of a free lifestyle. He's also known as a treasure hunter, and possesses martial arts skills.",
+    "stats": {
+      "defense": 7,
+      "attack": 6,
+      "soloAttack": "Knuckle Dash",
+      "special":"Fire Power Throw",
+      "code": {
+        "key": "3-124",
+        "exe": "0.0.0.0/0"
+      }
+    }
+  },
+  {
+    "id": "0a0b4c",
+    "url": "https://sonic.fandom.com/wiki/Sonic_Heroes"
+  } 
+
+]
