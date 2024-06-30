@@ -2,14 +2,17 @@
 import React, {useState} from 'react'; //import React and state at the top
 //remove imports, starter template
 import SonicPicture from './img/sonic.png'; // importing the picture directly
+import ShadowPicture from './img/shadow.png';
+import SilverPicture from './img/silver.png';
 
 //reference data.js for the Sonic Data and summon the parameters from the file
-import {hello, sonic, one, two, sonicData} from "./data.js";
+import {hello, sonic, one, two, sonicData, shadowData, silverData} from "./data.js";
 
 //reference files (components)
 import CharForm from './CharForm.js';
 import StatusForm from './StatusForm.js';
 import UpdateUserForm from './UpdateUser.js';
+import SearchForm from './SearchForm.js';
 
 import tickets from "./tickets.json";
 import characters from "./characters.json";
@@ -72,6 +75,11 @@ function App() {
   
   console.log("user outside:>> ", user);
   
+  const searchCallbackHandler = (e) => {
+    console.log("e.target.value :>> ", e.target.value);
+  };
+
+
   //this handler function can move to where your forms are
   /*
     const handleEntryChange = (e) => {
@@ -91,7 +99,14 @@ function App() {
     <div className="App">
       <KitDeveloper/> 
       <hr />
-      <Sonic />  {/* component instantiation- move all the code below */}
+      <DataInventory />
+      <Sonic />
+      <hr />
+      <Shadow/>
+      <hr />
+      <Silver/>  
+      
+      {/* component instantiation- move all the code below */}
       <hr />
       {/* Basic: the form can now pass the handler functions */}
       {/* 
@@ -114,6 +129,8 @@ function App() {
         </span>
       <hr />
       <StatusForm handleAddStatus={handleAddStatus}/>
+      <hr />
+      <SearchForm searchCallbackHandler={searchCallbackHandler}/>
       <hr />
       <h3>Ticket Status Codes</h3>
       <TicketList statusList={statusList}/>    
@@ -173,12 +190,13 @@ function KitDeveloper() {
  )
 }
 
-function UpdateList(props) {
-  console.log(props);
+//refactoring props out of the functions using destructuring
+function UpdateList({user}) {
+  //console.log(props);
   return(
     <div>
       <h4>New Users Loading...</h4>
-      {props.user.map((user) => (
+      {user.map((user) => (
       <ul>
         <li>{user}</li>
       </ul>
@@ -187,12 +205,12 @@ function UpdateList(props) {
   )
  }
 
-function CharList(props) {
- console.log(props);
+function CharList({charname}) {
+ //console.log(props);
  return(
    <div>
      <h4>New Characters Loading...</h4>
-     {props.charname.map((charname) => (
+     {charname.map((charname) => (
      <ul>
        <li>{charname}</li>
      </ul>
@@ -201,19 +219,55 @@ function CharList(props) {
  )
 }
 
-function TicketList(props) {
-  console.log(props);
+function TicketList({statusList}) {
+  //console.log(props);
   return(
     <div> 
       <h4>Default Values</h4>  
       {/* add props before the json target */}
       {/* upgrade from status to statusList */}
-      {props.statusList.map((statusList) => (
+      {statusList.map((statusList) => (
       <ul>
         {/* <li>{ticket}</li> */}
         <li>{statusList}</li>
       </ul>
       ))}
+    </div>
+  )
+}
+
+function DataInventory() {
+  const [log, setLog] = useState({
+    object_id: null,
+    title: "Character Inventory Log",
+    compileDate: "2024-05-15",
+    updateDate: "2024-06-30",
+    developer: {
+      id: 1,
+      name: "Kit Fenrir"
+    }
+  }) 
+  return (
+    <div>
+       <h1>
+          {hello}, {log.developer.name}
+        </h1>
+        <ul>
+          <li>
+          {log.title}
+          </li>
+          <li>
+            Compile Date: {log.compileDate}
+          </li>
+          <li>
+            Revision Date: {log.updateDate}
+          </li>
+        </ul>
+      {/* {log.map((log) => (
+        <ul>
+          <li>{log}</li>
+        </ul>
+      ))} */}
     </div>
   )
 }
@@ -273,6 +327,70 @@ function Sonic() {
         <img src={SonicPicture} alt={sonicData.alt} />
         {/* importing the picture using a component */}
 
+      </figure>
+    </div>
+  )
+}
+
+function Shadow() {
+  return(
+    <div>
+      <h1>
+        {hello}, {shadowData.name}
+      </h1>
+      <h2> 
+        code key: pending release
+      </h2>
+      <h3>
+        {shadowData.name} lives in {shadowData.area}
+      </h3>
+      <ul>
+          {shadowData.activities.map(
+            (activity) => (
+              <li>{activity}</li>
+          ))}
+      </ul>
+      <figure>
+        <figcaption>
+          This is an image of Shadow:
+        </figcaption>
+         <br />
+         {/* <img src={sonicData.image} alt={sonicData.alt} /> */}
+         {/* putting the src and alt into the character object */}
+        <img src={ShadowPicture} alt={shadowData.alt} />
+        {/* importing the picture using a component */}
+      </figure>
+    </div>
+  )
+}
+
+function Silver() {
+  return(
+    <div>
+      <h1>
+        {hello}, {silverData.name}
+      </h1>
+      <h2> 
+        code key: pending release
+      </h2>
+      <h3>
+        {silverData.name} lives in {silverData.area}
+      </h3>
+      <ul>
+          {silverData.activities.map(
+            (activity) => (
+              <li>{activity}</li>
+          ))}
+      </ul>
+      <figure>
+        <figcaption>
+          This is an image of Silver:
+        </figcaption>
+         <br />
+         {/* <img src={sonicData.image} alt={sonicData.alt} /> */}
+         {/* putting the src and alt into the character object */}
+        <img src={SilverPicture} alt={silverData.alt} />
+        {/* importing the picture using a component */}
       </figure>
     </div>
   )

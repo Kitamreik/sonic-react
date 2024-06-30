@@ -1,4 +1,4 @@
- const handleEntryChange = (e) => {
+const handleEntryChange = (e) => {
     console.log(e.target.value);
  };
 
