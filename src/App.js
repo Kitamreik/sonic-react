@@ -1,18 +1,20 @@
 //React Hooks
-import React, {useState} from 'react'; //import React and state at the top
-//remove imports, starter template
-import SonicPicture from './img/sonic.png'; // importing the picture directly
-import ShadowPicture from './img/shadow.png';
-import SilverPicture from './img/silver.png';
-
-//reference data.js for the Sonic Data and summon the parameters from the file
-import {hello, sonic, one, two, sonicData, shadowData, silverData} from "./data.js";
+import React, {useEffect, useState} from 'react'; //import React and state at the top
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 
 //reference files (components)
-import CharForm from './CharForm.js';
-import StatusForm from './StatusForm.js';
-import UpdateUserForm from './UpdateUser.js';
-import SearchForm from './SearchForm.js';
+import CharForm from './components/CharForm.js';
+import StatusForm from './components/StatusForm.js';
+import UpdateUserForm from './components/UpdateUser.js';
+import SearchForm from './components/SearchForm.js';
+import Admin from "./components/Admin.js";
+import KitDeveloper from "./components/KitDev.js";
+import CharList from "./components/CharList.js";
+import CombinedCharSet from "./components/CombinedCharSet.js";
+import DataInventory from "./components/DataInventory.js";
+import TicketList from "./components/TicketList.js";
+import UpdateList from "./components/UpdateList.js";
+
 
 import tickets from "./tickets.json";
 import characters from "./characters.json";
@@ -23,6 +25,8 @@ console.log(characters);
 //Define and assign variables before the function declaration for the App. To display JavaScript in React, you need curly brackets
 
 function App() {
+
+
    //const [STATE_NAME, SETTER_FUNCTION] = useState(INITIAL_VALUE);
   //WHERE: The first element is the current value of the state, the second element is a state setter function. Just call it with a new value, and the state will be set and the component will re-render, CAN also initialize the state to null to allow any data type instead of defining it explicitly
 
@@ -93,6 +97,11 @@ function App() {
    console.log(e.target.name.value);
   };
   */
+  
+
+
+  
+  
   //Handler Function Area END
 
   return (
@@ -100,21 +109,12 @@ function App() {
       <KitDeveloper/> 
       <hr />
       <DataInventory />
-      <Sonic />
+      <Admin/>
+      <CombinedCharSet/>
       <hr />
-      <Shadow/>
+      <h2>Back End Fetch Retrieval</h2>
+      {/* <Fetch/>  */}
       <hr />
-      <Silver/>  
-      
-      {/* component instantiation- move all the code below */}
-      <hr />
-      {/* Basic: the form can now pass the handler functions */}
-      {/* 
-      <NewEntryForm
-        handleEntryChange={handleEntryChange}
-        handleFormSubmit={handleFormSubmit}
-      />
-      */}
       {/* REFACTORED using use state */}
       <CharForm handleAddChar={handleAddChar}/>
       <CharList charname={charname}/>
@@ -142,258 +142,54 @@ function App() {
 
 // component definition outside of the app
 // do not touch below this point
-function KitDeveloper() {
-  //initialize the state to an object
-  const [developer, setDeveloper] = useState({
-   name: "Kit Fenrir Amreik (they/she)",
-   location: "Denver, CO",
-   github: "https://github.com/Kitamreik",
-   linkedIn: "https://www.linkedin.com/in/kit-amreik/",
-   email: "kitdamreik@gmail.com",
-   website: "https://tj-practitioner-directory.onrender.com/",
-   portfolio: "https://kit-fenrir-amreik-portfolio.onrender.com/",
-   gradYear: 2022,
-   tfYear: 2023,
-   teachingYear: 2
- })
+/*
+Fetch API Syntax
 
- const handleAddTeachYear = () => {
-   setDeveloper((prevState) => {
-     //make a copy of the prevState and change what to you need to
-     const newTeach = {...prevState, teachingYear: developer.teachingYear + 1};
-     return newTeach;
-   })
- }
+fetch("url", { options })
+  .then((response) => response.json())
+  .then((result) => console.log(result))
+  .catch((error) => console.log(error));
+*/
 
- const handleNextYear = () => {
-   setDeveloper((prevState) => {
-     //make a copy of the prevState and change what to you need to
-     const newYear = {...prevState, tfYear: developer.tfYear + 1};
-     return newYear;
-   })
- }
+function Fetch() {
+  const [char, setChar] = useState([]); //Gather char from inventory
+  const [err, setErr] = useState(""); //set the use state to an empty string to display the err message
 
- return(
-   <div>
-     <span>  {/* must be first */}
-       <h1>Current Developer Information</h1>
-       <p>The current developer working on this React interface is {developer.name}, who resides in {developer.location}, and can be reached at <a href="mailto:kitdamreik#gmail.com">{developer.email}</a> . Their website links and information can be found below:</p>
-       <ul>
-         <li>Github: <a href="https://github.com/Kitamreik">{developer.github}</a></li>
-         <li>LinkedIn: <a href="https://www.linkedin.com/in/kit-amreik/">{developer.linkedIn}</a></li>
-         <li>Website: <a href="https://tj-practitioner-directory.onrender.com/">{developer.website}</a></li>
-         <li>Portfolio: <a href="https://kit-fenrir-amreik-portfolio.onrender.com/">{developer.portfolio}</a></li>
-       </ul>
-       <p>Kit has also been a CodeSquad bootcamp grad since {developer.gradYear} and is currently on year <button onClick={handleAddTeachYear}>{developer.teachingYear}</button>of teaching as of <button onClick={handleNextYear}>{developer.tfYear}</button>.</p>
-     </span>
-   </div>
- )
-}
+  const url = "http://localhost:5050/";
+   //useEffect hook
+   useEffect(() => {
+    //fetch command
+    fetch(`${url}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+    //then-catch chaining 
+    .then((response) => response.json)
+    .then((result) => {
+      if (result.statusCode === 200) {
+        console.log("Setting future state of Character Inventory")
+        setChar(result.data)
+      } else {
+        throw new Error(result.error.message)
+      }
+    })
+    .catch(error => setErr(error.message))
+   }, [])
 
-//refactoring props out of the functions using destructuring
-function UpdateList({user}) {
-  //console.log(props);
-  return(
-    <div>
-      <h4>New Users Loading...</h4>
-      {user.map((user) => (
-      <ul>
-        <li>{user}</li>
-      </ul>
-      ))}
-    </div>
-  )
- }
+  (err ? (<p>{err}</p>) : (
+    char && char.map((entry) =>
+      <div key={entry._id}>
+        <a href={`/characters/${entry._id}`}>
+        <img src={`/images/${entry.name}`} alt={`${entry.alt}`} />
+        </a>
 
-function CharList({charname}) {
- //console.log(props);
- return(
-   <div>
-     <h4>New Characters Loading...</h4>
-     {charname.map((charname) => (
-     <ul>
-       <li>{charname}</li>
-     </ul>
-     ))}
-   </div>
- )
-}
+      </div>
+    ))
+  );
 
-function TicketList({statusList}) {
-  //console.log(props);
-  return(
-    <div> 
-      <h4>Default Values</h4>  
-      {/* add props before the json target */}
-      {/* upgrade from status to statusList */}
-      {statusList.map((statusList) => (
-      <ul>
-        {/* <li>{ticket}</li> */}
-        <li>{statusList}</li>
-      </ul>
-      ))}
-    </div>
-  )
-}
 
-function DataInventory() {
-  const [log, setLog] = useState({
-    object_id: null,
-    title: "Character Inventory Log",
-    compileDate: "2024-05-15",
-    updateDate: "2024-06-30",
-    developer: {
-      id: 1,
-      name: "Kit Fenrir"
-    }
-  }) 
-  return (
-    <div>
-       <h1>
-          {hello}, {log.developer.name}
-        </h1>
-        <ul>
-          <li>
-          {log.title}
-          </li>
-          <li>
-            Compile Date: {log.compileDate}
-          </li>
-          <li>
-            Revision Date: {log.updateDate}
-          </li>
-        </ul>
-      {/* {log.map((log) => (
-        <ul>
-          <li>{log}</li>
-        </ul>
-      ))} */}
-    </div>
-  )
-}
-
-function Sonic() {
-  return (
-    <div>
-       <h1>
-        {hello}, {sonic}
-      </h1>
-      <h2> 
-        {/* generate a code key 3-122 */}
-        code key:
-        {one + two}
-        {one - two}
-        {one * two}
-        {two / one}
-      </h2>
-      <h3>
-        {sonicData.name} lives in {sonicData.area}
-      </h3>
-      <ul>
-          {sonicData.activities.map(
-            (activity) => (
-              <li>{activity}</li>
-          ))}
-
-        {/* use the map function to iterate over arrays */}
-        {/* 
-         <li>
-          {sonicData.activities[0]}  
-        </li>
-        <li>
-          {sonicData.activities[1]}  
-        </li>
-        <li>
-          {sonicData.activities[2]}  
-        </li>
-        */}
-      </ul>
-      <figure>
-        <figcaption>
-          This is an image of Sonic:
-        </figcaption>
-        {/* <img src={require("./img/sonic.png")} alt={"Sonic the Hedgehog"} />  */}
-        {/* manually render an image without a component. 
-        
-        You attempted to import ../img/sonic.png which falls outside of the project src/ directory. Relative imports outside of src/ are not supported. 
-        
-        Use require to render an image dynamically instead of hard-coding the file path. 
-        
-        Doc: https://medium.com/@carlie.anglemire/requiring-images-in-react-9bcf6a8c2cb
-        */}
-         <br />
-         {/* <img src={sonicData.image} alt={sonicData.alt} /> */}
-         {/* putting the src and alt into the character object */}
-        <img src={SonicPicture} alt={sonicData.alt} />
-        {/* importing the picture using a component */}
-
-      </figure>
-    </div>
-  )
-}
-
-function Shadow() {
-  return(
-    <div>
-      <h1>
-        {hello}, {shadowData.name}
-      </h1>
-      <h2> 
-        code key: pending release
-      </h2>
-      <h3>
-        {shadowData.name} lives in {shadowData.area}
-      </h3>
-      <ul>
-          {shadowData.activities.map(
-            (activity) => (
-              <li>{activity}</li>
-          ))}
-      </ul>
-      <figure>
-        <figcaption>
-          This is an image of Shadow:
-        </figcaption>
-         <br />
-         {/* <img src={sonicData.image} alt={sonicData.alt} /> */}
-         {/* putting the src and alt into the character object */}
-        <img src={ShadowPicture} alt={shadowData.alt} />
-        {/* importing the picture using a component */}
-      </figure>
-    </div>
-  )
-}
-
-function Silver() {
-  return(
-    <div>
-      <h1>
-        {hello}, {silverData.name}
-      </h1>
-      <h2> 
-        code key: pending release
-      </h2>
-      <h3>
-        {silverData.name} lives in {silverData.area}
-      </h3>
-      <ul>
-          {silverData.activities.map(
-            (activity) => (
-              <li>{activity}</li>
-          ))}
-      </ul>
-      <figure>
-        <figcaption>
-          This is an image of Silver:
-        </figcaption>
-         <br />
-         {/* <img src={sonicData.image} alt={sonicData.alt} /> */}
-         {/* putting the src and alt into the character object */}
-        <img src={SilverPicture} alt={silverData.alt} />
-        {/* importing the picture using a component */}
-      </figure>
-    </div>
-  )
 }
 
 export default App;

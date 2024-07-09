@@ -8,7 +8,7 @@ export const sonicData = {
   name: "Sonic the Hedgehog",
   area: "Green Hill Zone",
   activities: ["Eating chili dogs", "Running at the speed of sound", "Kicking Eggman's butt"],
-  image: require("./img/sonic.png"),
+  image: require("../img/sonic.png"),
   alt: "Sonic the Hedgehog"
 }
 export const silverData = {
@@ -16,7 +16,7 @@ export const silverData = {
   name: "Silver the Hedgehog",
   area: "Port Town",
   activities: ["Peace", "Helping others succeed", "Psychokinesis"],
-  image: require("./img/silver.png"),
+  image: require("../img/silver.png"),
   alt: "Silver the Hedgehog"
 }
 export const shadowData = {
@@ -24,6 +24,6 @@ export const shadowData = {
   name: "Shadow the Hedgehog",
   area: "Space Station",
   activities: ["Defending Maria", "Going against Sonic in a race", "Overcoming Struggles"],
-  image: require("./img/shadow.png"),
+  image: require("../img/shadow.png"),
   alt: "Shadow the Hedgehog"
 }
