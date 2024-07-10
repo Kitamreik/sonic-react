@@ -1,6 +1,10 @@
 //React Hooks
 import React, {useEffect, useState} from 'react'; //import React and state at the top
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import {BrowserRouter as Routes, Route} from 'react-router-dom';
+
+//Header and Footer
+import Header from "./shared/Header.js";
+import Footer from "./shared/Footer.js";
 
 //reference files (components)
 import CharForm from './components/CharForm.js';
@@ -25,19 +29,43 @@ console.log(characters);
 //Define and assign variables before the function declaration for the App. To display JavaScript in React, you need curly brackets
 
 function App() {
-
+  const [user, setUser] = useState(localStorage.getItem("user") || {});
 
    //const [STATE_NAME, SETTER_FUNCTION] = useState(INITIAL_VALUE);
   //WHERE: The first element is the current value of the state, the second element is a state setter function. Just call it with a new value, and the state will be set and the component will re-render, CAN also initialize the state to null to allow any data type instead of defining it explicitly
 
-  //Initialize the state to a number to allow for a count
-  const [count, setCount] = useState(0);
+  //this handler function can move to where your forms are
+  /*
+    const handleEntryChange = (e) => {
+     console.log(e.target.value);
+  }; 
+  */
 
-  const handleCounter = () => {
-    setCount(count => count + 1) //callback function, correct
-    //setCount(count + 1) //bug, just a statement
-  }
+  //once you implement useState, this isn't needed:
+  /*
+    const handleFormSubmit =  (e) => {
+   console.log(e.target.name.value);
+  };
+  */
+  
+  //Handler Function Area END
 
+  return (
+    <div className="App">
+    <Header user={user} setUser={setUser} />
+       {/* start Routes */}
+        <KitDeveloper/> 
+    {/* <Fetch/>  */}
+    <Footer />
+    </div>
+  );
+}
+
+// component definition outside of the app
+// do not touch below this point
+
+function Routing() {
+  const [user, setUser] = useState(localStorage.getItem("user") || {});
   //const status = [ "Not started...", "In progress...", "Completed"];
 
   //Upgrade the array to use the useState hook
@@ -63,12 +91,6 @@ function App() {
     console.log(newChar);
   }
 
-   //Basic: define the state of user
-   //const [user, setUser] = useState("CodeSquader");
-
-   //upgrade to populate users names using useState
-  const [user, setUser] = useState(["Administrator",]);
-
   const updateUsername = (e) => {
     e.preventDefault();
     //use the setUser parameter to locate the event target's value
@@ -82,66 +104,24 @@ function App() {
   const searchCallbackHandler = (e) => {
     console.log("e.target.value :>> ", e.target.value);
   };
-
-
-  //this handler function can move to where your forms are
-  /*
-    const handleEntryChange = (e) => {
-     console.log(e.target.value);
-  }; 
-  */
-
-  //once you implement useState, this isn't needed:
-  /*
-    const handleFormSubmit =  (e) => {
-   console.log(e.target.name.value);
-  };
-  */
-  
-
-
-  
-  
-  //Handler Function Area END
-
-  return (
-    <div className="App">
-      <KitDeveloper/> 
-      <hr />
-      <DataInventory />
-      <Admin/>
-      <CombinedCharSet/>
-      <hr />
-      <h2>Back End Fetch Retrieval</h2>
-      {/* <Fetch/>  */}
-      <hr />
+  return(
+    <Routes>
+     <Route path='/admin' element={ <Admin/>}/>
+      <Route path='/data-inventory' element={<DataInventory />}/>
+      <Route path='/combined-characters' element={<CombinedCharSet/>}/>
       {/* REFACTORED using use state */}
-      <CharForm handleAddChar={handleAddChar}/>
-      <CharList charname={charname}/>
-      <hr />
-      <UpdateUserForm updateUsername={updateUsername}/>
-      <UpdateList user={user}/>
-      {/* user counter w/ useState */}
-      <span>
-          <p>Detecting manual user count...: {count}</p>
-          {/* reference the initial state */}
-          <button onClick={handleCounter}>Add a User!</button>
-        </span>
-      <hr />
-      <StatusForm handleAddStatus={handleAddStatus}/>
-      <hr />
-      <SearchForm searchCallbackHandler={searchCallbackHandler}/>
-      <hr />
-      <h3>Ticket Status Codes</h3>
-      <TicketList statusList={statusList}/>    
-      {/* pull from the defined array in the App function */}
-     
-    </div>
-  );
+      <Route path='/add-char' element={<CharForm handleAddChar={handleAddChar}/>}/>
+      <Route path='/char-list' element={ <CharList charname={charname}/>}/>
+      <Route path='/update-user' element={ <UpdateUserForm updateUsername={updateUsername}/>}/>
+      <Route path='/update-list' element={ <UpdateList user={user}/>}/>
+      <Route path='/add-status' element={ <StatusForm handleAddStatus={handleAddStatus}/>}/>
+      <Route path='/search-call' element={ <SearchForm searchCallbackHandler={searchCallbackHandler}/>}/>
+      <Route path='/tickets' element={<TicketList statusList={statusList}/> }/>
+    </Routes>
+  )
 }
 
-// component definition outside of the app
-// do not touch below this point
+
 /*
 Fetch API Syntax
 
@@ -177,6 +157,10 @@ function Fetch() {
     })
     .catch(error => setErr(error.message))
    }, [])
+   return(
+    <h2>Back End Fetch Retrieval Pending Maintenance...</h2>
+    
+   )
 
   (err ? (<p>{err}</p>) : (
     char && char.map((entry) =>
